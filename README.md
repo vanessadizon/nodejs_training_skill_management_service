@@ -42,23 +42,14 @@ https://code.visualstudio.com/download
 https://sequelpro.com/download
 please use whatever you like, (e.g. DBeaver, TablePlus, ...)
 
-### 2. Import source of Frontend&Backend from git
+### 2. Import Backend codes from git
 
-2-1. Clone source with sourcetree from github.
-
-frontend
-git clone https://github.com/vanessadizon/aws-training-management-system-client.git
+2-1. Clone sourcecodes from github.
 
 backend
-https://github.com/vanessadizon/aws-training-management-system-server.git
+https://github.com/vanessadizon/nodejs_training_skill_management_service.git
 
-2-2. Installing Package dependencies of frontend
-
-```bash
-npm install
-```
-
-2-3. Installing Package dependencies of backend
+2-2. Installing Package dependencies of backend
 
 ```bash
 cd server
