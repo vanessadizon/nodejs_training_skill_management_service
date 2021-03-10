@@ -1,0 +1,63 @@
+{
+    "appenders": {
+        "out": { "type": "stdout" },
+        "error": {
+            "type": "dateFile",
+            "filename": "log/error.log",
+            "pattern": "-yyyyMMdd.log",
+            "daysToKeep ": 5
+        },
+        "access": {
+            "type": "dateFile",
+            "filename": "log/access.log",
+            "pattern": "-yyyyMMdd.log",
+            "compress": true,
+            "daysToKeep ": 5,
+            "format": ":remote-addr :method :url :status :response-time ms"
+        },
+        "app": {
+            "type": "dateFile",
+            "filename": "log/app.log",
+            "pattern": "-yyyyMMdd.log",
+            "compress": true,
+            "daysToKeep": 5
+        },
+        "client": {
+            "type": "dateFile",
+            "filename": "log/client.log",
+            "pattern": "-yyyyMMdd.log",
+            "compress": true,
+            "daysToKeep": 5
+        },
+        "system": {
+            "type": "dateFile",
+            "filename": "log/system.log",
+            "pattern": "-yyyyMMdd.log",
+            "daysToKeep ": 5
+        },
+        "errorFilter": {
+            "type": "logLevelFilter",
+            "appender": "error",
+            "level": "error"
+        }
+    },
+    "categories": {
+        "default": {
+            "appenders": ["out", "app", "errorFilter"],
+            "level": "ALL"
+        },
+        "access": {
+            "appenders": ["out", "access", "errorFilter"],
+            "level": "ALL"
+        },
+        "system": {
+            "appenders": ["out", "system", "errorFilter"],
+            "level": "ALL"
+        },
+        "client": {
+            "appenders": ["out", "client"],
+            "level": "ALL"
+        }
+    },
+    "replaceConsole": true
+}

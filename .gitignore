@@ -1,0 +1,13 @@
+Docker_Image_Build.txt
+DockerFile
+Jenkinsfile
+/.nyc_output/
+/.scannerwork/
+/lcov-report/
+/mochawesome-report/
+/reports/
+/node_modules/
+package-lock.json
+*.log
+*.gz
+*.BACKUP
