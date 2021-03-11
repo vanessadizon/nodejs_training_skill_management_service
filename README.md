@@ -1,4 +1,4 @@
-# aws-training-management-system
+# NodeJS-training-skill-management-service
 
 ## Git Hub Rule
 

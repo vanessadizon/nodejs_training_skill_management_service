@@ -13,8 +13,7 @@ const swaggerOptions = {
             description: config.swagger.description,
             contact: {
                 name: config.swagger.contact.name
-            },
-            servers: [config.swagger.servers]
+            }
         }
     },
     // ['.routes/*.js']

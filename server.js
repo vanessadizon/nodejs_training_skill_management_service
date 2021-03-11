@@ -16,8 +16,8 @@ const config = require(path.resolve('middleware/config/config'));
 // Create a new Express application instance
 const app = configureExpress();
 
-// The port on the DEA for communication with the application:
-var port = (process.env.VCAP_APP_PORT || config.port);
+// The port of communication with the application:
+var port = (process.env.APP_PORT || config.port);
 app.set('port', port);
 
 // Listen on provided port, on all network interfaces.

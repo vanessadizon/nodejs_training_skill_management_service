@@ -2,10 +2,10 @@
     "include": "app",
     "exclude": "app/models",
     "check-coverage": true,
-    "lines": 5,
-    "branches": 5,
-    "functions": 5,
-    "statements": 5,
+    "lines": 85,
+    "branches": 85,
+    "functions": 85,
+    "statements": 85,
     "report-dir": "./lcov-report",
     "skip-full": true
 }

@@ -14,8 +14,9 @@ exports.getSkillBySkillId = async (req, res) => {
             return res.status(200).json({});
         }
     } catch (err) {
-        errorHandling(err, (status_code, error_message) => {
-            return res.status(status_code).json({ "error_message" : error_message })
-        })
+    // TODO : Need to implement errorHandling function
+    // errorHandling(err, (status_code, error_message) => {
+    //  return res.status(status_code).json({ "error_message" : error_message })
+    // })
     }
 };

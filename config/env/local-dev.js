@@ -2,12 +2,9 @@
 
 require('dotenv').config();
 
-// Set the 'development' environment configuration object
+// Set the 'local-dev' environment configuration object
 module.exports = {
-    sessionSecret: 'developmentSessionSecret',
-    uploadDirectory: './upload/',
     mysql: {
-        // host: 'host.docker.internal',
         host: 'localhost',
         user: process.env.SECRET_DB_USER,
         password: process.env.SECRET_DB_PASSWORD,
@@ -20,14 +17,11 @@ module.exports = {
         description: 'Skill Management',
         contact: {
             name: 'vanessa.dizon@awsys-i.com'
-        },
-        servers: 'http://localhost:' + 3002 + '/'
+        }
     },
     jwt: {
         secretKey: 'qawsedrftgyhujikolp;@:',
         expire: 60 * 60 * 24
     },
-    port: 3001,
-    modelFlag: false
-
+    port: 3001
 };

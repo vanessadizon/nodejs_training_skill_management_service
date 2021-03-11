@@ -2,10 +2,8 @@
 
 require('dotenv').config();
 
-// Set the 'development' environment configuration object
+// Set the 'test environment' environment configuration object
 module.exports = {
-    sessionSecret: 'developmentSessionSecret',
-    uploadDirectory: './upload/',
     mysql: {
         host: '192.168.1.2',
         user: process.env.SECRET_DB_USER,
@@ -20,13 +18,7 @@ module.exports = {
         contact: {
             name: 'vanessa.dizon@awsys-i.com'
         },
-        servers: 'http://localhost:' + 3002 + '/'
-    },
-    jwt: {
-        secretKey: 'qawsedrftgyhujikolp;@:',
-        expire: 60 * 60 * 24
+        servers: 'http://localhost:' + 3001 + '/'
     },
     port: 3001,
-    modelFlag: false
-
 };
