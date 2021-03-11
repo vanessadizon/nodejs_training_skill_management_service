@@ -2,26 +2,12 @@
 
 ## Git Hub Rule
 
-1. Please name your branch like this:
+Please name your branch like this:
 
    ```
    sample: 
    nodejs_training_[YOUR NAME]
    ```
-
-2. You must push with  **pull request** and set reviewer to review when you changed source code. 
-
-3. for development, you may  use **develop** branch
-
-   ```bash
-   ## how to pull develop branch on your local branch
-   git checkout master ##switch branch to master
-   git pull ##fetch remote branch
-   git branch -a ##check all branch on remote&local
-   git checkout -b [new branch name] origin/develop ##fetch develop branch to local branch named [new branch name]
-   ```
-
-4. You must push just code be able to compile. before you push your code, please merge recent develop branch on your local branch and check if working correctly.
 
    
 
