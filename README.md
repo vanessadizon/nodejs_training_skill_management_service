@@ -2,11 +2,11 @@
 
 ## Git Hub Rule
 
-1. Please name your local branch to be able to understand who was developed.
+1. Please name your branch like this:
 
    ```
    sample: 
-   [pagename]-[purpose]-[your name]
+   nodejs_training_[YOUR NAME]
    ```
 
 2. You must push with  **pull request** and set reviewer to review when you changed source code. 
