@@ -16,7 +16,7 @@ module.exports = {
         title: 'Skill Management',
         description: 'Skill Management',
         contact: {
-            name: 'vanessa.dizon@awsys-i.com'
+            name: 'prince.cortes@awsys-i.com'
         },
         servers: 'http://localhost:' + 3001 + '/'
     },
