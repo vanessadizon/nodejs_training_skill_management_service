@@ -11,6 +11,9 @@ module.exports = function () {
     // Create a new Express application instance
     const app = express();
 
+    // Used to parse incoming requests
+    app.use(express.json());
+
     // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
     if (process.env.NODE_ENV === 'development') {
         app.use(morgan('dev'));
