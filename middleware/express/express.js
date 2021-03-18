@@ -2,6 +2,9 @@
 // Load the module dependencies
 const path = require('path'),
     express = require('express'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    config = require(path.resolve('middleware/config/config')),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
     swaggerUi = require("swagger-ui-express");
@@ -18,13 +21,19 @@ module.exports = function () {
     } else if (process.env.NODE_ENV === 'production') {
         app.use(compress());
     }
+    // Use the 'body-parser' and 'method-override' middleware functions
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
+    app.use(methodOverride());
 
     // Routing log directory
     app.use('/log', express.static(path.resolve('log')));
 
     // Write access logs
     app.use(logger.connectLogger(logger.getLogger('access')));
-     
+
     // Configure swagger api documentation
     app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 

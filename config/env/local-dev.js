@@ -17,7 +17,8 @@ module.exports = {
         description: 'Skill Management',
         contact: {
             name: 'vanessa.dizon@awsys-i.com'
-        }
+        },
+        servers: 'http://localhost:' + 3001 + '/'
     },
     jwt: {
         secretKey: 'qawsedrftgyhujikolp;@:',
