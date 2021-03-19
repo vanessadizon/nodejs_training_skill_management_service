@@ -592,7 +592,7 @@ describe("Skill API", function () {
           references: [
             {
               ref_link: "https://www.youtube.com/watch?v=2bW3HuaAUcY",
-              ref_category: 0,
+              ref_category: 1,
               length_in_mins: 12,
             },
           ],

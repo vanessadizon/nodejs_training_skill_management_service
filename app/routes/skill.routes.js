@@ -11,7 +11,8 @@ module.exports = function (app) {
    *  post:
    *   tags:
    *     - Skill API
-   *   description: Able to add new skill.
+   *   description: Able to add new skill. <br /><br /> For the value of ref_category, please set 0 for video category, 1 for reading material category and 2 for other category.
+   *
    *   parameters:
    *     - in: body
    *       name: body
