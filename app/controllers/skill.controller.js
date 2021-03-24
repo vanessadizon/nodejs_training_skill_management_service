@@ -71,13 +71,7 @@ exports.addSkill = async (req, res) => {
     let skillDbResult = await skillModel.addSkill(skill);
 
     if (skillDbResult.affectedRows > 0) {
-      const reference = {
-        ref_link: req.body.references[0].ref_link,
-        ref_category: req.body.references[0].ref_category,
-        length_in_mins: req.body.references[0].length_in_mins,
-        skill_id: skillDbResult.insertId,
-      };
-      await skillModel.addReference(reference);
+      helpers.addReferences(req.body.references, skillDbResult.insertId);
       return res.status(200).json({ added: "1" });
     } else {
       return res.status(200).json({ added: "0" });
@@ -102,13 +96,8 @@ exports.updateSkill = async (req, res) => {
 
     let skillDbResult = await skillModel.updateSkill(skill);
     if (skillDbResult.affectedRows > 0) {
-      const reference = {
-        ref_link: req.body.references[0].ref_link,
-        ref_category: req.body.references[0].ref_category,
-        length_in_mins: req.body.references[0].length_in_mins,
-        skill_id: req.params.skill_id,
-      };
-      await skillModel.updateReference(reference);
+      await skillModel.deleteReferenceBySkillId(skill.skill_id);
+      helpers.addReferences(req.body.references, skill.skill_id);
       return res.status(200).json({ updated: "1" });
     } else {
       return res.status(200).json({ updated: "0" });

@@ -1,3 +1,5 @@
+const skillModel = require("../models/skill.model");
+
 // handles error code and message
 exports.errorHandler = (err, callback) => {
   let error_code = 503;
@@ -16,4 +18,17 @@ exports.errorHandler = (err, callback) => {
   }
 
   callback(error_code, error_message);
+};
+
+// loop through references and add to db
+exports.addReferences = async (references, skillId) => {
+  for (const ref of references) {
+    const reference = {
+      ref_link: ref.ref_link,
+      ref_category: ref.ref_category,
+      length_in_mins: ref.length_in_mins,
+      skill_id: skillId,
+    };
+    await skillModel.addReference(reference);
+  }
 };
