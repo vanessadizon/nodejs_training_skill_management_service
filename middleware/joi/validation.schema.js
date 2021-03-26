@@ -6,10 +6,23 @@ const skillDetailsSchema = Joi.object({
   references: Joi.array().items(
     Joi.object({
       ref_link: Joi.string().max(100).required(),
-      ref_category: Joi.number().integer().valid(0,1,2),
+      ref_category: Joi.number().integer().valid(0, 1, 2),
       length_in_mins: Joi.number().integer(),
     })
   ),
 });
 
-module.exports = skillDetailsSchema;
+const userSchema = Joi.object({
+  aws_email: Joi.string().max(255).email().required(),
+  password: Joi.string().max(255).min(8).required(),
+  last_name: Joi.string().max(45).required(),
+  first_name: Joi.string().max(45).required(),
+  dev: Joi.string().max(45).required(),
+});
+
+const loginSchema = Joi.object({
+  aws_email: Joi.string().max(255).email().required(),
+  password: Joi.string().max(255).required(),
+});
+
+module.exports = { skillDetailsSchema, userSchema, loginSchema };

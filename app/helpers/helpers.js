@@ -20,6 +20,26 @@ exports.errorHandler = (err, callback) => {
   callback(error_code, error_message);
 };
 
+// handles user related error code and message
+exports.userErrorHandler = (err, callback) => {
+  let error_code = 503;
+  let error_message = "Cannot connect to database / System error";
+
+  // duplicate entry error
+  if (err.code === "ER_DUP_ENTRY") {
+    error_code = 409;
+    error_message = "User already exists.";
+  }
+
+  // validation entry error
+  if (err.isJoi === true) {
+    error_code = 422;
+    error_message = err.details[0].message;
+  }
+
+  callback(error_code, error_message);
+};
+
 // loop through references and add to db
 exports.addReferences = async (references, skillId) => {
   for (const ref of references) {

@@ -1,5 +1,6 @@
 "use strict";
 
+const { validateToken } = require("../../middleware/jwt/jwt");
 // Load the 'skill' controller
 const skillController = require("../controllers/skill.controller");
 
@@ -58,7 +59,7 @@ module.exports = function (app) {
    *     required:
    *       - ref_link
    */
-  app.route("/api/v1/aws-training-management-system/skill").post(skillController.addSkill);
+  app.route("/api/v1/aws-training-management-system/skill").post(validateToken, skillController.addSkill);
 
   /**
    * @swagger
@@ -93,7 +94,7 @@ module.exports = function (app) {
    *       examples:
    *         application/json: { "error_message": "Cannot connect to database / System error." }
    */
-  app.route("/api/v1/aws-training-management-system/skill/:skill_id").put(skillController.updateSkill);
+  app.route("/api/v1/aws-training-management-system/skill/:skill_id").put(validateToken, skillController.updateSkill);
 
   /**
    * @swagger
@@ -119,7 +120,7 @@ module.exports = function (app) {
    *       examples:
    *         application/json: { "error_message": "Cannot connect to database / System error." }
    */
-  app.route("/api/v1/aws-training-management-system/skill/id/:skill_id").get(skillController.getSkillBySkillId);
+  app.route("/api/v1/aws-training-management-system/skill/id/:skill_id").get(validateToken, skillController.getSkillBySkillId);
 
   /**
    * @swagger
@@ -139,7 +140,7 @@ module.exports = function (app) {
    *       examples:
    *         application/json: { "error_message": "Cannot connect to database / System error." }
    */
-  app.route("/api/v1/aws-training-management-system/skill/all").get(skillController.getSkillAll);
+  app.route("/api/v1/aws-training-management-system/skill/all").get(validateToken, skillController.getSkillAll);
 
   /**
    * @swagger
@@ -164,5 +165,5 @@ module.exports = function (app) {
    *       examples:
    *         application/json: { "error_message": "Cannot connect to database / System error." }
    */
-  app.route("/api/v1/aws-training-management-system/skill/:skill_id").delete(skillController.deleteSkillBySkillId);
+  app.route("/api/v1/aws-training-management-system/skill/:skill_id").delete(validateToken, skillController.deleteSkillBySkillId);
 };

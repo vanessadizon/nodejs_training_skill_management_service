@@ -1,7 +1,7 @@
 "use strict";
 
 const skillModel = require("../models/skill.model");
-const skillDetailsSchema = require("../../middleware/joi/validation.schema");
+const { skillDetailsSchema } = require("../../middleware/joi/validation.schema");
 const helpers = require("../helpers/helpers");
 
 // route '/api/v1/aws-training-management-system/skill/id/:skill_id'
