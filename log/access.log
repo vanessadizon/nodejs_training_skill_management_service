@@ -50,3 +50,4 @@
 [2021-03-26T18:26:27.516] [INFO] access - ::1 - - "GET /api-docs/swagger-ui-init.js HTTP/1.1" 304 - "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
 [2021-03-26T18:26:28.500] [INFO] access - ::1 - - "GET /api-docs/favicon-32x32.png HTTP/1.1" 304 - "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
 [2021-03-26T18:26:34.306] [INFO] access - ::1 - - "GET /api/v1/aws-training-management-system/skill/all HTTP/1.1" 200 467 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
+[2021-03-26T21:28:46.351] [INFO] access - ::1 - - "DELETE /api/v1/aws-training-management-system/skill/16fsd HTTP/1.1" 400 44 "" "PostmanRuntime/7.26.10"

@@ -21,7 +21,7 @@ exports.getSkillBySkillId = async (req, res) => {
             return res.status(200).json({});
         }
     } catch (err) {
-        errorHandling(err, callback);
+        errorHandling(res, err, callback);
     }
 };
 
@@ -45,7 +45,7 @@ exports.addNewSkill = async (req, res) => {
         });
         return res.status(200).json({ added: '1' });
     } catch (err) {
-        errorHandling(err, callback);
+        errorHandling(res, err, callback);
     }
 };
 
@@ -74,7 +74,7 @@ exports.updateSkillDetails = async (req, res) => {
         }
         return res.status(200).json({ updated: '0' });
     } catch (err) {
-        errorHandling(err, callback);
+        errorHandling(res, err, callback);
     }
 };
 
@@ -92,7 +92,7 @@ exports.deleteSkillBySkillId = async (req, res) => {
         }
         return res.status(200).json({ deleted: '0' });
     } catch (err) {
-        errorHandling(err, callback);
+        errorHandling(res, err, callback);
     }
 };
 
@@ -108,6 +108,6 @@ exports.getAllSkills = async (req, res) => {
         }
         return res.status(200).json(skillDbResult);
     } catch (err) {
-        errorHandling(err, callback);
+        errorHandling(res, err, callback);
     }
 };
