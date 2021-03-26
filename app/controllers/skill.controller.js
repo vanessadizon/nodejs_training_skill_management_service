@@ -25,7 +25,6 @@ class ValidationError extends Error {
         this.name = 'ValidationError';
         // Custom debugging information
         this.code = 'VALIDATION_ERROR';
-        this.date = new Date();
     }
 }
 
@@ -66,17 +65,13 @@ exports.addNewSkill = async (req, res) => {
             skill_description
         );
 
-        if (skillDbResult.affectedRows > 0) {
-            references.forEach((reference) => {
-                skillModel.addReference({
-                    ...reference,
-                    skill_id: skillDbResult.insertId,
-                });
+        references.forEach((reference) => {
+            skillModel.addReference({
+                ...reference,
+                skill_id: skillDbResult.insertId,
             });
-            return res.status(200).json({ added: '1' });
-        } else {
-            return res.status(200).json({ added: '0' });
-        }
+        });
+        return res.status(200).json({ added: '1' });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res
@@ -145,21 +140,13 @@ exports.deleteSkillBySkillId = async (req, res) => {
 exports.getAllSkills = async (req, res) => {
     try {
         let skillDbResult = await skillModel.getAllSkills();
-        let skills = [];
-        skills = skillDbResult.map(async (skill) => {
-            const references = await skillModel.getReferenceBySkillId(
+
+        for (const skill of skillDbResult) {
+            skill.references = await skillModel.getReferenceBySkillId(
                 skill.skill_id
             );
-            return { ...skill, references };
-        });
-
-        Promise.all(skills).then((values) => {
-            if (values.length > 0) {
-                return res.status(200).json(values);
-            } else {
-                return res.status(200).json([]);
-            }
-        });
+        }
+        return res.status(200).json(skillDbResult);
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res

@@ -40,6 +40,8 @@ module.exports = function (app) {
      *   tags:
      *     - Skill API
      *   description: Able to add New Skill.
+     *
+     *      For the value ref_category, please set 0 for video category, 1 for reading material category and for other category
      *   parameters:
      *     - in: body
      *       name: body
@@ -52,8 +54,12 @@ module.exports = function (app) {
      *       description: 1.) return { result }
      *       examples:
      *         application/json: { "addded": "1"}
-     *     503:
+     *     409:
      *       description: 2.) return { error_message }
+     *       examples:
+     *         application/json: { "error_message": "Duplicate entry." }
+     *     503:
+     *       description: 3.) return { error_message }
      *       examples:
      *         application/json: { "error_message": "Cannot connect to database / System error." }
      *
@@ -98,7 +104,7 @@ module.exports = function (app) {
 
     /**
      * @swagger
-     * /api/v1/aws-training-management-system/skill/:skill_id:
+     * /api/v1/aws-training-management-system/skill/{skill_id}:
      *  put:
      *   tags:
      *     - Skill API
@@ -120,8 +126,12 @@ module.exports = function (app) {
      *       description: 1.) return { result }
      *       examples:
      *         application/json: { "updated": "1"}
-     *     503:
+     *     409:
      *       description: 2.) return { error_message }
+     *       examples:
+     *         application/json: { "error_message": "Duplicate entry." }
+     *     503:
+     *       description: 3.) return { error_message }
      *       examples:
      *         application/json: { "error_message": "Cannot connect to database / System error." }
      *
@@ -132,7 +142,7 @@ module.exports = function (app) {
 
     /**
      * @swagger
-     * /api/v1/aws-training-management-system/skill/:skill_id:
+     * /api/v1/aws-training-management-system/skill/{skill_id}:
      *  delete:
      *   tags:
      *     - Skill API

@@ -314,6 +314,45 @@ describe('Skill API', function () {
         });
     });
 
+    describe('updateSkillDetails no data found', () => {
+        beforeEach(() => {
+            sinon
+                .stub(skillModel, 'updateSkillDetails')
+                .resolves({ affectedRows: 0 });
+        });
+
+        afterEach((done) => {
+            sinon.restore();
+            done();
+        });
+
+        it('return updated: 0', (done) => {
+            chai.request(app)
+                .put('/api/v1/aws-training-management-system/skill/1')
+                .send({
+                    skill_name: 'MySQL ',
+                    skill_description: 'RDBMS ...',
+                    references: [
+                        {
+                            ref_link:
+                                'https://www.youtube.com/watch?v=fBNz5xF-Kx4&t=2s',
+                            ref_category: 0,
+                            length_in_mins: 60,
+                        },
+                    ],
+                })
+                .end((err, response) => {
+                    const checkObj = JSON.stringify({
+                        updated: '0',
+                    });
+                    const responseBody = JSON.stringify(response.body);
+                    responseBody.should.be.eql(checkObj);
+                    response.should.have.status(200);
+                    done();
+                });
+        });
+    });
+
     describe('updateSkillDetails invalid skill_id', () => {
         afterEach((done) => {
             sinon.restore();
@@ -389,6 +428,33 @@ describe('Skill API', function () {
                 .end((err, response) => {
                     const checkObj = JSON.stringify({
                         deleted: '1',
+                    });
+                    const responseBody = JSON.stringify(response.body);
+                    responseBody.should.be.eql(checkObj);
+                    response.should.have.status(200);
+                    done();
+                });
+        });
+    });
+
+    describe('deleteSkillBySkillId no skill found', () => {
+        beforeEach(() => {
+            sinon
+                .stub(skillModel, 'deleteSkillBySkillId')
+                .resolves({ affectedRows: 0 });
+        });
+
+        afterEach((done) => {
+            sinon.restore();
+            done();
+        });
+
+        it('return deleted: 0', (done) => {
+            chai.request(app)
+                .delete('/api/v1/aws-training-management-system/skill/1')
+                .end((err, response) => {
+                    const checkObj = JSON.stringify({
+                        deleted: '0 ',
                     });
                     const responseBody = JSON.stringify(response.body);
                     responseBody.should.be.eql(checkObj);
