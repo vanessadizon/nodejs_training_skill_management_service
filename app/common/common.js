@@ -1,20 +1,20 @@
-const skillModel = require("../models/skill.model");
+const skillModel = require('../models/skill.model');
 
 // handles error code and message
 exports.errorHandler = (err, callback) => {
   let error_code = 503;
-  let error_message = "Cannot connect to database / System error";
-
-  // duplicate entry error
-  if (err.code === "ER_DUP_ENTRY") {
-    error_code = 409;
-    error_message = "Duplicate entry.";
-  }
+  let error_message = 'Cannot connect to database / System error';
 
   // validation entry error
   if (err.isJoi === true) {
     error_code = 422;
     error_message = err.details[0].message;
+  }
+
+  // duplicate entry error
+  if (err.code === 'ER_DUP_ENTRY') {
+    error_code = 409;
+    error_message = 'Duplicate entry.';
   }
 
   callback(error_code, error_message);
@@ -23,12 +23,12 @@ exports.errorHandler = (err, callback) => {
 // handles user related error code and message
 exports.userErrorHandler = (err, callback) => {
   let error_code = 503;
-  let error_message = "Cannot connect to database / System error";
+  let error_message = 'Cannot connect to database / System error';
 
   // duplicate entry error
-  if (err.code === "ER_DUP_ENTRY") {
+  if (err.code === 'ER_DUP_ENTRY') {
     error_code = 409;
-    error_message = "User already exists.";
+    error_message = 'User already exists.';
   }
 
   // validation entry error

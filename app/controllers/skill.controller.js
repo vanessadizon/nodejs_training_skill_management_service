@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-const skillModel = require("../models/skill.model");
-const { skillDetailsSchema } = require("../../middleware/joi/validation.schema");
-const helpers = require("../helpers/helpers");
+const skillModel = require('../models/skill.model');
+const { skillDetailsSchema } = require('../../middleware/joi/validation.schema');
+const common = require('../common/common');
 
 // route '/api/v1/aws-training-management-system/skill/id/:skill_id'
 exports.getSkillBySkillId = async (req, res) => {
@@ -16,7 +16,7 @@ exports.getSkillBySkillId = async (req, res) => {
       return res.status(200).json({});
     }
   } catch (err) {
-    helpers.errorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
@@ -35,7 +35,7 @@ exports.getSkillAll = async (req, res) => {
       return res.status(200).json({});
     }
   } catch (err) {
-    helpers.errorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
@@ -49,12 +49,12 @@ exports.deleteSkillBySkillId = async (req, res) => {
 
     if (skillDbResult.affectedRows > 0) {
       await skillModel.deleteReferenceBySkillId(skill_id);
-      return res.status(200).json({ deleted: "1" });
+      return res.status(200).json({ deleted: '1' });
     } else {
-      return res.status(200).json({ deleted: "0" });
+      return res.status(200).json({ deleted: '0' });
     }
   } catch (err) {
-    helpers.errorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
@@ -71,13 +71,13 @@ exports.addSkill = async (req, res) => {
     let skillDbResult = await skillModel.addSkill(skill);
 
     if (skillDbResult.affectedRows > 0) {
-      helpers.addReferences(req.body.references, skillDbResult.insertId);
-      return res.status(200).json({ added: "1" });
+      common.addReferences(req.body.references, skillDbResult.insertId);
+      return res.status(200).json({ added: '1' });
     } else {
-      return res.status(200).json({ added: "0" });
+      return res.status(200).json({ added: '0' });
     }
   } catch (err) {
-    helpers.errorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
@@ -97,13 +97,13 @@ exports.updateSkill = async (req, res) => {
     let skillDbResult = await skillModel.updateSkill(skill);
     if (skillDbResult.affectedRows > 0) {
       await skillModel.deleteReferenceBySkillId(skill.skill_id);
-      helpers.addReferences(req.body.references, skill.skill_id);
-      return res.status(200).json({ updated: "1" });
+      common.addReferences(req.body.references, skill.skill_id);
+      return res.status(200).json({ updated: '1' });
     } else {
-      return res.status(200).json({ updated: "0" });
+      return res.status(200).json({ updated: '0' });
     }
   } catch (err) {
-    helpers.errorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
