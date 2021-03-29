@@ -98,7 +98,6 @@ exports.deleteSkillBySkillId = async (req, res) => {
 exports.getAllSkills = async (req, res) => {
     try {
         const skillDbResult = await skillModel.getAllSkills();
-
         for (const skill of skillDbResult) {
             skill.references = await skillModel.getReferenceBySkillId(skill.skill_id);
         }

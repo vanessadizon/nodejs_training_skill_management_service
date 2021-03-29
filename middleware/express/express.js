@@ -7,7 +7,8 @@ const path = require('path'),
     config = require(path.resolve('middleware/config/config')),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
-    swaggerUi = require('swagger-ui-express');
+    swaggerUi = require('swagger-ui-express'),
+    passport = require('passport');
 
 // Define the Express configuration method
 module.exports = function () {
@@ -31,6 +32,12 @@ module.exports = function () {
     );
     app.use(bodyParser.json());
     app.use(methodOverride());
+
+    // Passport Middleware
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    require('../passport/passport')(passport);
 
     // Routing log directory
     app.use('/log', express.static(path.resolve('log')));

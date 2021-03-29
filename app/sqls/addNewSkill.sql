@@ -1,5 +1,5 @@
 INSERT INTO 
-	skill
+	atms_db.skill
 	(
 		skill_name,
 		skill_description

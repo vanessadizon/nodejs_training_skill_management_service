@@ -2,6 +2,7 @@
 
 // Load the 'skill' controller
 const skillController = require('../controllers/skill.controller');
+const passport = require('passport');
 
 // Define the routes module' method
 module.exports = function (app) {
@@ -29,7 +30,7 @@ module.exports = function (app) {
      *       examples:
      *         application/json: { "error_message": "Cannot connect to database / System error." }
      */
-    app.route('/api/v1/aws-training-management-system/skill/id/:skill_id').get(
+    app.route('/api/v1/aws-training-management-system/skill/id/:skill_id').get(passport.authenticate('jwt', {session:false}),
         skillController.getSkillBySkillId
     );
 

@@ -1,4 +1,4 @@
 SELECT
     *
 FROM
-    skill
+    atms_db.skill

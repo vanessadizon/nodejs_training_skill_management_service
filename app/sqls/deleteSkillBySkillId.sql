@@ -1,3 +1,3 @@
 DELETE 
-FROM skill 
+FROM atms_db.skill 
 WHERE skill_id = ?;

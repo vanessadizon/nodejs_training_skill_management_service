@@ -1,5 +1,5 @@
 INSERT INTO 
-	reference
+	atms_db.reference
 	(
 		ref_link,
 		ref_category,
