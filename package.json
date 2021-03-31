@@ -12,11 +12,13 @@
   "private": true,
   "dependencies": {
     "@hapi/joi": "^17.1.1",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.18.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "generic-pool": "^3.7.1",
+    "jsonwebtoken": "^8.5.1",
     "log4js": "^6.3.0",
     "method-override": "3.0.0",
     "mysql": "^2.18.1",

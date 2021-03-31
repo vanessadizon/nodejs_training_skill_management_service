@@ -1,0 +1,22 @@
+GET http://localhost:3001/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiSXZhbiIsInBhc3N3b3JkIjoiJDJiJDEwJHIuUEZpMzV5MTNHYTlDS2xJaW5OcS5WSUNMQ1JJSjdiZkR4ZFFjdnZHT1U2by5Fb2gyRUh1IiwiaWF0IjoxNjE3MDgzNzE2fQ.vlBO1QXJ5dtPZmNPRtj5GHrabFimGJ6XKg56FoeTfqw
+
+###
+
+POST http://localhost:3001/users
+Content-Type: application/json
+
+{
+    "name": "Ivan",
+    "password": "admin"
+}
+
+###
+
+POST http://localhost:3001/users/login
+Content-Type: application/json
+
+{
+    "name": "Ivan",
+    "password": "admin"
+}

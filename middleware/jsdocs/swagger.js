@@ -15,6 +15,10 @@ const swaggerOptions = {
                 name: config.swagger.contact.name
             },
             servers: [config.swagger.servers]
+        },
+        schemes: {
+            http:"http",
+            https:"https"
         }
     },
     // ['.routes/*.js']
