@@ -7,12 +7,15 @@ const path = require('path'),
     config = require(path.resolve('middleware/config/config')),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
-    swaggerUi = require("swagger-ui-express");
+    swaggerUi = require('swagger-ui-express'),
+    passport = require('passport');
 
 // Define the Express configuration method
 module.exports = function () {
     // Create a new Express application instance
     const app = express();
+
+    app.use(express.json());
 
     // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
     if (process.env.NODE_ENV === 'development') {
@@ -22,11 +25,19 @@ module.exports = function () {
         app.use(compress());
     }
     // Use the 'body-parser' and 'method-override' middleware functions
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
+    app.use(
+        bodyParser.urlencoded({
+            extended: true,
+        })
+    );
     app.use(bodyParser.json());
     app.use(methodOverride());
+
+    // Passport Middleware
+    app.use(passport.initialize());
+    app.use(passport.session());
+
+    require('../passport/passport')(passport);
 
     // Routing log directory
     app.use('/log', express.static(path.resolve('log')));
@@ -35,7 +46,7 @@ module.exports = function () {
     app.use(logger.connectLogger(logger.getLogger('access')));
 
     // Configure swagger api documentation
-    app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
     // Configure static file serving
     app.use('/lib', express.static(path.resolve('./node_modules')));
