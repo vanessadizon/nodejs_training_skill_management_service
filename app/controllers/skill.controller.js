@@ -1,7 +1,7 @@
 'use strict';
 
 const skillModel = require('../models/skill.model');
-const { ValidationError, errorHandling } = require('../utils/errors');
+const { ValidationError, errorHandling, EntityNotFoundError } = require('../common/common');
 const { skillSchema, idSchema } = require('../utils/validation');
 
 // route '/api/v1/aws-training-management-system/skill/id/:skill_id'
@@ -66,8 +66,9 @@ exports.updateSkillDetails = async (req, res) => {
                 skillModel.addReference({ ...reference, skill_id });
             });
             return res.status(200).json({ updated: '1' });
+        } else {
+            throw new EntityNotFoundError(`Skill with id: ${skill_id} does not exists`);
         }
-        return res.status(200).json({ updated: '0' });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });
@@ -85,8 +86,9 @@ exports.deleteSkillBySkillId = async (req, res) => {
         if (skillDbResult.affectedRows > 0) {
             await skillModel.deleteReferenceBySkillId(skill_id);
             return res.status(200).json({ deleted: '1' });
+        } else {
+            throw new EntityNotFoundError(`Skill with id: ${skill_id} does not exists`);
         }
-        return res.status(200).json({ deleted: '0' });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });

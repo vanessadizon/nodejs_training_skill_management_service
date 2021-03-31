@@ -1,6 +1,6 @@
 'use strict';
 
-const swaggerJsDoc = require("swagger-jsdoc"),
+const swaggerJsDoc = require('swagger-jsdoc'),
     path = require('path'),
     config = require(path.resolve('middleware/config/config'));
 
@@ -12,14 +12,14 @@ const swaggerOptions = {
             title: config.swagger.title,
             description: config.swagger.description,
             contact: {
-                name: config.swagger.contact.name
+                name: config.swagger.contact.name,
             },
-            servers: [config.swagger.servers]
-        }
+            servers: [config.swagger.servers],
+        },
     },
     // ['.routes/*.js']
     // apis: ["server.js"]
-    apis: ["./app/routes/*.js"]
+    apis: ['./app/routes/*.js'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
