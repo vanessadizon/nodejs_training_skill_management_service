@@ -513,3 +513,11 @@
 [2021-03-31T15:36:49.823] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/swagger-ui.css HTTP/1.1" 200 143212 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
 [2021-03-31T15:36:49.971] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/favicon-16x16.png HTTP/1.1" 200 665 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
 >>>>>>> Stashed changes
+[2021-03-31T16:07:41.996] [INFO] access - ::ffff:127.0.0.1 - - "DELETE /api/v1/aws-training-management-system/skill/40 HTTP/1.1" 200 15 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:07:52.953] [INFO] access - ::ffff:127.0.0.1 - - "GET /api/v1/aws-training-management-system/skill/all HTTP/1.1" 200 1753 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.398] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/ HTTP/1.1" 200 3104 "" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.466] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/swagger-ui-init.js HTTP/1.1" 200 8917 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.470] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/swagger-ui.css HTTP/1.1" 200 143212 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.475] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/swagger-ui-standalone-preset.js HTTP/1.1" 200 332952 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.479] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/swagger-ui-bundle.js HTTP/1.1" 200 1061588 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
+[2021-03-31T16:10:14.619] [INFO] access - ::ffff:127.0.0.1 - - "GET /api-docs/favicon-16x16.png HTTP/1.1" 200 665 "http://localhost:3001/api-docs/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:87.0) Gecko/20100101 Firefox/87.0"
