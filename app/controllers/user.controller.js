@@ -26,7 +26,7 @@ exports.registerUser = async (req, res) => {
         return res.status(200).json({ registered: '0' });
       }
     } catch (err) {
-      common.userErrorHandler(err, (status_code, error_message) => {
+      common.errorHandler(err, (status_code, error_message) => {
         return res.status(status_code).json({ error_message: error_message });
       });
     }
@@ -47,11 +47,11 @@ exports.loginUser = async (req, res) => {
         return res.status(400).json({ error_message: 'invalid username/password' });
       } else {
         const accessToken = await createToken(user);
-        res.json({ accessToken: accessToken });
+        res.status(200).json({ accessToken: accessToken });
       }
     });
   } catch (err) {
-    common.userErrorHandler(err, (status_code, error_message) => {
+    common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });
     });
   }
