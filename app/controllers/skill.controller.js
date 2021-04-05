@@ -1,13 +1,15 @@
 'use strict';
 
 const skillModel = require('../models/skill.model');
-const { skillDetailsSchema } = require('../../middleware/joi/validation.schema');
+const { skillDetailsSchema, skillIdSchema } = require('../../middleware/joi/validation.schema');
 const common = require('../common/common');
 
 // route '/api/v1/aws-training-management-system/skill/id/:skill_id'
 exports.getSkillBySkillId = async (req, res) => {
-  const { skill_id } = req.params;
   try {
+    await skillIdSchema.validateAsync(req.params);
+    const { skill_id } = req.params;
+
     let skillDbResult = await skillModel.getSkillBySkillId(skill_id);
     if (skillDbResult.length > 0) {
       skillDbResult[0].references = await skillModel.getReferenceBySkillId(skill_id);
@@ -43,8 +45,9 @@ exports.getSkillAll = async (req, res) => {
 
 // route '/api/v1/aws-training-management-system/skill/:skill_id'
 exports.deleteSkillBySkillId = async (req, res) => {
-  const { skill_id } = req.params;
   try {
+    await skillIdSchema.validateAsync(req.params);
+    const { skill_id } = req.params;
     let skillDbResult = await skillModel.deleteSkillBySkillId(skill_id);
 
     if (skillDbResult.affectedRows > 0) {
@@ -86,6 +89,7 @@ exports.addSkill = async (req, res) => {
 // route '/api/v1/aws-training-management-system/skill/:skill_id'
 exports.updateSkill = async (req, res) => {
   try {
+    await skillIdSchema.validateAsync(req.params);
     await skillDetailsSchema.validateAsync(req.body);
 
     const skill = {

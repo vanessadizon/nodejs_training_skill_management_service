@@ -47,9 +47,22 @@ exports.loginUser = async (req, res) => {
         return res.status(400).json({ error_message: 'invalid username/password' });
       } else {
         const accessToken = await createToken(user);
-        res.status(200).json({ accessToken: accessToken });
+        res.cookie('jwt', accessToken, { httpOnly: true, maxAge: 60 * 60 * 24 });
+        return res.json({ login: '1' });
       }
     });
+  } catch (err) {
+    common.errorHandler(err, (status_code, error_message) => {
+      return res.status(status_code).json({ error_message: error_message });
+    });
+  }
+};
+
+// route '/api/v1/aws-training-management-system/user/logout'
+exports.logoutUser = async (req, res) => {
+  try {
+    res.cookie('jwt', '', { maxAge: 1 });
+    return res.status(200).json({ logout: '1' });
   } catch (err) {
     common.errorHandler(err, (status_code, error_message) => {
       return res.status(status_code).json({ error_message: error_message });

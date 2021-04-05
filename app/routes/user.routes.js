@@ -1,7 +1,7 @@
-"use strict";
+'use strict';
 
 // Load the 'user' controller
-const userController = require("../controllers/user.controller");
+const userController = require('../controllers/user.controller');
 
 // Define the routes module' method
 module.exports = function (app) {
@@ -53,7 +53,7 @@ module.exports = function (app) {
    *       - first_name
    *       - dev
    */
-  app.route("/api/v1/aws-training-management-system/user/register").post(userController.registerUser);
+  app.route('/api/v1/aws-training-management-system/user/register').post(userController.registerUser);
 
   /**
    * @swagger
@@ -88,5 +88,24 @@ module.exports = function (app) {
    *       examples:
    *         application/json: { "error_message": "Cannot connect to database / System error." }
    */
-  app.route("/api/v1/aws-training-management-system/user/login").post(userController.loginUser);
+  app.route('/api/v1/aws-training-management-system/user/login').post(userController.loginUser);
+
+  /**
+   * @swagger
+   * /api/v1/aws-training-management-system/user/logout:
+   *  get:
+   *   tags:
+   *     - User API
+   *   description: User logout.
+   *   responses:
+   *     200:
+   *       description: 1.) return { result }
+   *       examples:
+   *         application/json: { "logout ": "1"}
+   *     503:
+   *       description: 3.) return { error_message }
+   *       examples:
+   *         application/json: { "error_message": "Cannot connect to database / System error." }
+   */
+  app.route('/api/v1/aws-training-management-system/user/logout').get(userController.logoutUser);
 };

@@ -15,10 +15,6 @@ module.exports = function (app) {
    *   description: Able to add new skill. <br /><br /> For the value of ref_category, please set 0 for video category, 1 for reading material category and 2 for other category.
    *
    *   parameters:
-   *     - in: header
-   *       name: authorization
-   *       schema:
-   *         type: string
    *     - in: body
    *       name: body
    *       schema:
@@ -73,10 +69,6 @@ module.exports = function (app) {
    *     - Skill API
    *   description: Able to update skill details.
    *   parameters:
-   *     - in: header
-   *       name: authorization
-   *       schema:
-   *         type: string
    *     - in: path
    *       name: skill_id
    *       schema:
@@ -112,10 +104,6 @@ module.exports = function (app) {
    *     - Skill API
    *   description: Able to get skill details by skill ID.
    *   parameters:
-   *     - in: header
-   *       name: authorization
-   *       schema:
-   *         type: string
    *     - in: path
    *       name: skill_id
    *       schema:
@@ -141,11 +129,6 @@ module.exports = function (app) {
    *   tags:
    *     - Skill API
    *   description: Able to get list of available skills.
-   *   parameters:
-   *     - in: header
-   *       name: authorization
-   *       schema:
-   *         type: string
    *   responses:
    *     200:
    *       description: 1.) return { result }
@@ -167,10 +150,6 @@ module.exports = function (app) {
    *     - Skill API
    *   description: Able to delete skill details by skill ID.
    *   parameters:
-   *     - in: header
-   *       name: authorization
-   *       schema:
-   *         type: string
    *     - in: path
    *       name: skill_id
    *       schema:

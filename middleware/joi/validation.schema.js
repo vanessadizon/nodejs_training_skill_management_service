@@ -1,4 +1,8 @@
-const Joi = require("@hapi/joi");
+const Joi = require('@hapi/joi');
+
+const skillIdSchema = Joi.object({
+  skill_id: Joi.number().required(),
+});
 
 const skillDetailsSchema = Joi.object({
   skill_name: Joi.string().max(45).required(),
@@ -25,4 +29,4 @@ const loginSchema = Joi.object({
   password: Joi.string().max(255).required(),
 });
 
-module.exports = { skillDetailsSchema, userSchema, loginSchema };
+module.exports = { skillDetailsSchema, userSchema, loginSchema, skillIdSchema };

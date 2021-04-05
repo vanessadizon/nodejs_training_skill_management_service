@@ -16,11 +16,11 @@ const createToken = (user) => {
 };
 
 const validateToken = (req, res, next) => {
-  if (!req.headers['authorization']) {
+  const token = req.cookies.jwt;
+  if (!token) {
     return res.status(401).json({ error_message: 'Unauthorized' });
   }
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
+
   JWT.verify(token, config.jwt.secretKey, (err, user) => {
     if (err) {
       if (err.name === 'JsonWebTokenError') {
