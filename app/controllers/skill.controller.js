@@ -15,6 +15,18 @@ const skillSchema = Joi.object({
     })
 });
 
+const addUserSchema = Joi.object({
+    aws_email: Joi.string().email().required(),
+    password: Joi.string().required(),
+    first_name: Joi.string().required(),
+    last_name: Joi.string().required(),
+    dev: Joi.string().required()
+});
+const userSchema = Joi.object({
+    user_id: Joi.number().required(),
+    password: Joi.required().required()
+});
+
 //Error Handling function
 function errorHandler(err, cb){
     let status_code;
@@ -173,14 +185,15 @@ exports.getAllSkills = async (req, res) => {
 };
 
 exports.addNewUser = async (req, res) => {
-    const user_details = {
-        aws_email: req.body.aws_email,
-        password: req.body.password,
-        last_name: req.body.last_name,
-        first_name: req.body.first_name,
-        dev: req.body.dev
-    }
     try{
+        await addUserSchema.validateAsync(req.body);
+        const user_details = {
+            aws_email: req.body.aws_email,
+            password: req.body.password,
+            last_name: req.body.last_name,
+            first_name: req.body.first_name,
+            dev: req.body.dev
+        }
         let skillDbResult = await skillModel.addNewUser(user_details);
         if(skillDbResult.affectedRows > 0) {
             return res.status(200).json({'added':'1'});
@@ -202,6 +215,7 @@ exports.user_login = async (req, res) =>{
         password: req.params.password
     }
     try{
+        await userSchema.validateAsync(user);
         let skillDbResult = await skillModel.user_login(user);
         if(skillDbResult.length > 0) {
             const token = jwt.sign(skillDbResult[0].user_id.toString(), process.env.ACCESS_TOKEN_SECRET);
