@@ -3,6 +3,7 @@
 // Load the 'user' controller
 const userController = require('../controllers/user.controller');
 const passport = require('passport');
+const { loggedIn } = require('../../middleware/passport/passport')
 
 module.exports = function (app) {
     /**
@@ -138,7 +139,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-     app.route('/api/v1/aws-training-management-system/user/:user_id').put(passport.authenticate('jwt', {session: false}), userController.updateUser);
+     app.route('/api/v1/aws-training-management-system/user/:user_id').put(passport.authenticate('jwt'), userController.updateUser);
 
      /**
      * @swagger
@@ -177,7 +178,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-      app.route('/api/v1/aws-training-management-system/user/:user_id').delete(passport.authenticate('jwt', {session: false}), userController.deleteUserByUserId);
+      app.route('/api/v1/aws-training-management-system/user/:user_id').delete(passport.authenticate('jwt'), userController.deleteUserByUserId);
 
     /**
      * @swagger
@@ -220,7 +221,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-    app.route('/api/v1/aws-training-management-system/user/id/:user_id').get(passport.authenticate('jwt', {session: false}), userController.getUserByUserId);
+    app.route('/api/v1/aws-training-management-system/user/id/:user_id').get(passport.authenticate('jwt'), userController.getUserByUserId);
 
     /**
      * @swagger
@@ -257,5 +258,27 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-    app.route('/api/v1/aws-training-management-system/user/all').get(passport.authenticate('jwt', {session: false}), userController.getAllUsers);
+    app.route('/api/v1/aws-training-management-system/user/all').get(passport.authenticate('jwt'), userController.getAllUsers);
+
+      /**
+     * @swagger
+     * /api/v1/aws-training-management-system/user/logout:
+     *  get:
+     *   tags:
+     *     - User API
+     *   description: Able to logout User.
+     *   security:
+     *     - Bearer: []
+     *   responses:
+     *     200:
+     *       description: 1.) return { result }
+     *       examples:
+     *         application/json: { "message": "Successfully logout user"}
+     * securityDefinitions:
+     *   Bearer:
+     *     type: apiKey
+     *     name: Authorization
+     *     in: header 
+     */
+       app.route('/api/v1/aws-training-management-system/user/logout').get(passport.authenticate('jwt'), userController.logout);
 };

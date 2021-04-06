@@ -8,7 +8,10 @@ const path = require('path'),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
     swaggerUi = require('swagger-ui-express'),
-    passport = require('passport');
+    passport = require('passport'),
+    session = require('express-session');
+
+var MemoryStore = require('memorystore')(session);
 
 // Define the Express configuration method
 module.exports = function () {
@@ -34,6 +37,15 @@ module.exports = function () {
     app.use(methodOverride());
 
     // Passport Middleware
+    app.use(
+        session({
+            secret: 'anything',
+            resave: true,
+            saveUninitialized: true,
+            cookie: { maxAge: 3600000 },
+            store: new MemoryStore(),
+        })
+    );
     app.use(passport.initialize());
     app.use(passport.session());
 

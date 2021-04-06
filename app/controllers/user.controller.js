@@ -9,7 +9,7 @@ const {
     ValidationError,
     EntityNotFoundError,
 } = require('../common/common');
-const { createToken } = require('../../middleware/jwt/jwt');
+const { createToken, destroyToken } = require('../../middleware/jwt/jwt');
 
 // route '/api/v1/aws-training-management-system/user/register'
 exports.register = async (req, res) => {
@@ -103,7 +103,7 @@ exports.getUserByUserId = async (req, res) => {
 };
 
 
-// route '/api/v1/aws-training-management-system/skill/all'
+// route '/api/v1/aws-training-management-system/user/all'
 exports.getAllUsers = async (req, res) => {
     try {
         const userDbResult = await userModel.getAllUsers();
@@ -115,3 +115,18 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
+// route '/api/v1/aws-training-management-system/user/logout'
+exports.logout = async (req, res) => {
+    try {
+        destroyToken();
+        req.session.destroy(function (err) {
+            res.status(200).json("message: Successfully logout user"); //Inside a callback… bulletproof!
+        });
+    } catch (err) {
+        errorHandling(err, (status_code, error_message) => {
+            return res.status(status_code).json({ error_message: error_message });
+        });
+    }
+};
+
+ 
