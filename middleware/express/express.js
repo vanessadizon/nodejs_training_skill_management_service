@@ -8,11 +8,16 @@ const path = require('path'),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
     swaggerUi = require("swagger-ui-express");
+const cookieParser = require('cookie-parser');
+
 
 // Define the Express configuration method
 module.exports = function () {
     // Create a new Express application instance
     const app = express();
+
+    //parse cookies
+    app.use(cookieParser());
 
     // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
     if (process.env.NODE_ENV === 'development') {

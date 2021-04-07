@@ -3,6 +3,8 @@
 const skillModel = require('../models/skill.model');
 const Joi = require('@hapi/joi');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
+
 
 //Validation for Skill Details using Joi
 const skillSchema = Joi.object({
@@ -23,9 +25,10 @@ const addUserSchema = Joi.object({
     dev: Joi.string().required()
 });
 const userSchema = Joi.object({
-    user_id: Joi.number().required(),
-    password: Joi.required().required()
+    user_id: Joi.number().required()
 });
+
+const maxAge = 3 * 24 * 60 * 60;
 
 //Error Handling function
 function errorHandler(err, cb){
@@ -49,7 +52,6 @@ const id = Joi.object({
 
 // route '/api/v1/aws-training-management-system/skill/id/:skill_id'
 exports.getSkillBySkillId = async (req, res)  => {
-
     checkToken(req, res, () => {});
     try {
         await id.validateAsync(req.params);
@@ -194,6 +196,9 @@ exports.addNewUser = async (req, res) => {
             first_name: req.body.first_name,
             dev: req.body.dev
         }
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(user_details.password, salt);
+        user_details.password = hashPassword;
         let skillDbResult = await skillModel.addNewUser(user_details);
         if(skillDbResult.affectedRows > 0) {
             return res.status(200).json({'added':'1'});
@@ -211,21 +216,28 @@ exports.addNewUser = async (req, res) => {
 
 exports.user_login = async (req, res) =>{
     const user = {
-        user_id: req.params.user_id,
-        password: req.params.password
+        user_id: req.params.user_id
     }
     try{
         await userSchema.validateAsync(user);
         let skillDbResult = await skillModel.user_login(user);
         if(skillDbResult.length > 0) {
-            const token = jwt.sign(skillDbResult[0].user_id.toString(), process.env.ACCESS_TOKEN_SECRET);
-            return res.status(200).json({
-                'access':'approved',
-                accessToken: token
-            });
+            if (await bcrypt.compare(req.params.password, skillDbResult[0].password)){
+                const token = jwt.sign(skillDbResult[0].user_id.toString(), process.env.ACCESS_TOKEN_SECRET);
+                res.cookie('jwt', token, {httponly: true, maxAge: maxAge * 1000})
+                return res.status(200).json({
+                    'access':'approved',
+                    accessToken: token
+                });
+            } else {
+                return res.status(200).json({
+                    'access':'denied',
+                    'error_message': 'Wrong password.'
+                });
+            }
         } else {
             return res.status(200).json({'access':'denied',
-                accessToken: ''
+                'error_message': 'User_id does not exist'
         });
         }
     } catch (err){
@@ -237,21 +249,57 @@ exports.user_login = async (req, res) =>{
     }
 }
 
-function checkToken (req, res, next){
-    const bearerHeader = req.headers['authorization'];
-
-    if (typeof bearerHeader !== 'undefined'){
-        const bearer = bearerHeader.split(' ');
-        const token = bearer[1];
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
-            if(err){
-                return res.status(200).json({error_message: "Invalid token."});
-            } else {
-                req.token = token;
-                next();
-            }
+exports.user_logout = async (req, res) => {
+    try{
+        if(!req.cookies.jwt){
+            return res.status(200).json({
+                error_message: "Not logged in."
+            })
+        }
+        res.cookie('jwt', '', {maxAge: 1});
+        return res.status(200).json({
+            logout: 'Successful'
         })
-    } else {
-        return res.status(200).json({error_message: "Need to login first to generate access permission."});
+    } catch{
+        errorHandler(err, (status_code, error_message) => {
+            return res.status(status_code).json({
+                error_message: error_message
+            });
+        })
     }
+    
+}
+
+function checkToken (req, res, next){
+    const login_token = req.cookies.jwt;
+    try{
+        if(!login_token){
+            return res.status(200).json({
+                error_message: "Need to login first to generate access permission"
+            });
+        }
+        const bearerHeader = req.headers['authorization'];
+        if (typeof bearerHeader !== 'undefined'){
+            const bearer = bearerHeader.split(' ');
+            const token = bearer[1];
+            jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+                if(err){
+                    return res.status(200).json({error_message: "Invalid token."});
+                } else {
+                    req.token = token;
+                    next();
+                }
+            })
+        } 
+    } catch (err){
+        errorHandler(err, (status_code, error_message) => {
+            return res.status(status_code).json({
+                error_message: error_message
+            });
+        })
+    }
+    
+    
+
+    
 }

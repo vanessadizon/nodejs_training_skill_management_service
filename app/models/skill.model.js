@@ -161,8 +161,7 @@ exports.user_login = (user) => {
     let prepareQuery = fs.readFileSync(path.resolve('app/sqls/userLogin.sql'), 'utf8');
     return new Promise((resolve, reject) => {
         db.execute(prepareQuery, [
-            user.user_id,
-            user.password
+            user.user_id
         ]).then((result) => {
             resolve(result);
         }).catch((err) => {

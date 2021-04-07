@@ -213,7 +213,8 @@ module.exports = function (app) {
     *     200:
     *       description: 1.) return { result }
     *       examples:
-    *         application/json: { "added": "1" }
+    *         application/json: { "skill_id": 2, "skill_name": "NodeJS", "skill_description": "A backend technology ...",
+    *                             "references": [{ "reference_id": 10, "ref_link": "https://www.youtube.com/watch?v=TlB_eWDSMt4&t=4s", "ref_category": 0, "length_in_mins": 60, "skill_id": 2 }] }
     *     409:
     *       description: 2.) return { error_message }
     *       examples:
@@ -225,7 +226,7 @@ module.exports = function (app) {
     */
    app.route('/api/v1/aws-training-management-system/skill/all')
       .get(skillController.getAllSkills)
-
+   
    /**
     * @swagger
     * /api/v1/aws-training-management-system/users/{user_id}/{password}:
@@ -259,7 +260,35 @@ module.exports = function (app) {
     app.route('/api/v1/aws-training-management-system/users/:user_id/:password')
       .get(skillController.user_login)
    
-   
+   /**
+    * @swagger
+    * /api/v1/aws-training-management-system/users/logout:
+    *  get:
+    *   security:
+    *     - Bearer: []
+    *   tags:
+    *     - Login API
+    *   description: Able to get list of skills.
+    *   consumes:
+    *     - application/json
+    *   responses:
+    *     200:
+    *       description: 1.) return { result }
+    *       examples:
+    *         application/json: { "skill_id": 2, "skill_name": "NodeJS", "skill_description": "A backend technology ...",
+    *                             "references": [{ "reference_id": 10, "ref_link": "https://www.youtube.com/watch?v=TlB_eWDSMt4&t=4s", "ref_category": 0, "length_in_mins": 60, "skill_id": 2 }] }
+    *     409:
+    *       description: 2.) return { error_message }
+    *       examples:
+    *          application/json: { "error_message": "Duplicate entry."}
+    *     503:
+    *       description: 2.) return { error_message }
+    *       examples:
+    *         application/json: { "error_message": "Cannot connect to database / System error." }
+    */
+   app.route('/api/v1/aws-training-management-system/users/logout')
+      .get(skillController.user_logout);
+
    /**
     * @swagger
     * /api/v1/aws-training-management-system/users/add:
