@@ -1,8 +1,10 @@
 'use strict';
 
-const { validateToken } = require('../../middleware/jwt/jwt');
 // Load the 'skill' controller
 const skillController = require('../controllers/skill.controller');
+
+// Load validation function
+const { validateToken } = require('../../middleware/jwt/jwt');
 
 // Define the routes module' method
 module.exports = function (app) {
