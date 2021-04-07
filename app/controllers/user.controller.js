@@ -10,7 +10,6 @@ const {
     EntityNotFoundError,
 } = require('../common/common');
 const { createToken, signRefreshToken, verifyRefreshToken } = require('../../middleware/jwt/jwt');
-const client = require('../../middleware/redis/redis');
 
 // route '/api/v1/aws-training-management-system/user/register'
 exports.register = async (req, res) => {
@@ -105,7 +104,6 @@ exports.getUserByUserId = async (req, res) => {
     }
 };
 
-
 // route '/api/v1/aws-training-management-system/user/all'
 exports.getAllUsers = async (req, res) => {
     try {
@@ -121,19 +119,10 @@ exports.getAllUsers = async (req, res) => {
 // route '/api/v1/aws-training-management-system/user/logout'
 exports.logout = async (req, res) => {
     try {
-       const refreshToken  = req.cookies.jwt
-       if(!refreshToken) throw new AuthenticationError("Not LoggedIn");
-       const email =  await verifyRefreshToken(refreshToken);
-       client.DEL(email, (err, value) => {
-           if (err) {
-               console.log(err.message);
-               throw new AuthenticationError("Not LoggedIn");
-           }
-           console.log(value);
-           res.cookie('jwt', '', { maxAge: 1 });
-           res.status(200).json({message: "Successfully Logout user"})
-       })
-
+        const refreshToken = req.cookies.jwt;
+        if (!refreshToken) throw new AuthenticationError('Not LoggedIn');
+        res.cookie('jwt', '', { maxAge: 1 });
+        res.status(200).json({ message: 'Successfully Logout user' });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });
@@ -144,19 +133,16 @@ exports.logout = async (req, res) => {
 // route '/api/v1/aws-training-management-system/user/logout'
 exports.refreshToken = async (req, res) => {
     try {
-        const refreshToken  = req.cookies.jwt
-        if(!refreshToken) throw new AuthenticationError("Not LoggedIn");
+        const refreshToken = req.cookies.jwt;
+        if (!refreshToken) throw new AuthenticationError('Not LoggedIn');
         const email = await verifyRefreshToken(refreshToken);
         const accessToken = await createToken(email);
-        const refToken = await signRefreshToken(email); 
-        res.cookie('jwt', refToken, { httpOnly: true, maxAge: 1000 * 24 * 60 * 60});
-        res.status(200).json({accessToken: accessToken, refreshToken: refToken});
+        const refToken = await signRefreshToken(email);
+        res.cookie('jwt', refToken, { httpOnly: true, maxAge: 1000 * 24 * 60 * 60 });
+        res.status(200).json({ accessToken: accessToken, refreshToken: refToken });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });
         });
     }
 };
-
-
- 

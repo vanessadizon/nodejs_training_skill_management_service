@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const config = require(path.resolve('middleware/config/config'));
 const logger = require(path.resolve('middleware/logging/logger')).getLogger('system');
-const client = require(path.resolve('middleware/redis/redis'));
-const { AuthenticationError } = require('../../app/common/common');
 
 exports.createToken = (email) => {
     return new Promise((resolve, reject) => {
@@ -29,14 +27,7 @@ exports.signRefreshToken = (email) => {
                     logger.error('[JWT]' + err);
                     reject(err);
                 } else {
-                    client.SET(email, token, 'EX',  24 * 60 * 60, (err, reply) => {
-                        if (err) {
-                            logger.error('[REDIS]' + err);
-                            reject(err);
-                            return;
-                        }
-                        resolve(token);
-                    });
+                    resolve(token);
                 }
             }
         );
@@ -68,16 +59,7 @@ exports.verifyRefreshToken = (refreshToken) => {
                 (err, payload) => {
                     if (err) return reject(err);
                     const email = payload.email;
-
-                    client.GET(email, (err, result) => {
-                        if (err) {
-                            logger.error('[REDIS]' + err);
-                            reject(err);
-                            return;
-                        }
-                        if (refreshToken === result) return resolve(email);
-                        reject(new AuthenticationError('UnAuthorized'));
-                    });
+                    resolve(email);
                 }
             );
         });

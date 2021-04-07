@@ -8,9 +8,7 @@ const path = require('path'),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
     swaggerUi = require('swagger-ui-express'),
-    cookies = require("cookie-parser"),
-    session = require('express-session');
-require(path.resolve('middleware/redis/redis'));
+    cookies = require("cookie-parser");
 
 
 // Define the Express configuration method
@@ -38,15 +36,6 @@ module.exports = function () {
     app.use(methodOverride());
 
 
-    // Passport Middleware
-    app.use(
-        session({
-            secret: 'anything',
-            resave: true,
-            saveUninitialized: true,
-            cookie: { maxAge: 3600000 }
-        })
-    );
     // Routing log directory
     app.use('/log', express.static(path.resolve('log')));
 
