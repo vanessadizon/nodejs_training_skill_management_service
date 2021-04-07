@@ -10,8 +10,8 @@ const path = require('path'),
     swaggerUi = require('swagger-ui-express'),
     passport = require('passport'),
     session = require('express-session');
+require(path.resolve('middleware/redis/redis'));
 
-var MemoryStore = require('memorystore')(session);
 
 // Define the Express configuration method
 module.exports = function () {
@@ -42,8 +42,7 @@ module.exports = function () {
             secret: 'anything',
             resave: true,
             saveUninitialized: true,
-            cookie: { maxAge: 3600000 },
-            store: new MemoryStore(),
+            cookie: { maxAge: 3600000 }
         })
     );
     app.use(passport.initialize());

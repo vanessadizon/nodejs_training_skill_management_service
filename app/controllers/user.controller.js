@@ -9,7 +9,8 @@ const {
     ValidationError,
     EntityNotFoundError,
 } = require('../common/common');
-const { createToken, destroyToken } = require('../../middleware/jwt/jwt');
+const { createToken, signRefreshToken, verifyRefreshToken } = require('../../middleware/jwt/jwt');
+const client = require('../../middleware/redis/redis');
 
 // route '/api/v1/aws-training-management-system/user/register'
 exports.register = async (req, res) => {
@@ -39,8 +40,9 @@ exports.login = async (req, res) => {
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) throw new AuthenticationError('invalid email/password');
-        const token = await createToken(user.aws_email);
-        return res.status(200).json({ token: 'Bearer ' + token });
+        const accessToken = await createToken(user.aws_email);
+        const refreshToken = await signRefreshToken(user.aws_email);
+        return res.status(200).json({ accessToken, refreshToken });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });
@@ -118,15 +120,40 @@ exports.getAllUsers = async (req, res) => {
 // route '/api/v1/aws-training-management-system/user/logout'
 exports.logout = async (req, res) => {
     try {
-        destroyToken();
-        req.session.destroy(function (err) {
-            res.status(200).json("message: Successfully logout user"); //Inside a callback… bulletproof!
-        });
+       const { refreshToken } = req.body;
+       if(!refreshToken) throw new Error();
+       const email =  await verifyRefreshToken(refreshToken);
+       client.DEL(userId, (err, value) => {
+           if (err) {
+               console.log(err.message);
+               throw new Error();
+           }
+           console.log(value);
+           res.status(204).json("Successfully Logout user")
+       })
+
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
             return res.status(status_code).json({ error_message: error_message });
         });
     }
 };
+
+// route '/api/v1/aws-training-management-system/user/logout'
+exports.refreshToken = async (req, res) => {
+    try {
+        const { refreshToken } = req.body
+        if(!refreshToken) throw new Error();
+        const email = await verifyRefreshToken(refreshToken);
+        const accessToken = await createToken(user.aws_email);
+        const refToken = await signRefreshToken(user.aws_email); 
+        res.status(200).json({accessToken: accessToken, refreshToken: refToken});
+    } catch (err) {
+        errorHandling(err, (status_code, error_message) => {
+            return res.status(status_code).json({ error_message: error_message });
+        });
+    }
+};
+
 
  
