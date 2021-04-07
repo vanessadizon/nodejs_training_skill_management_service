@@ -42,6 +42,7 @@ exports.login = async (req, res) => {
         if (!isMatch) throw new AuthenticationError('invalid email/password');
         const accessToken = await createToken(user.aws_email);
         const refreshToken = await signRefreshToken(user.aws_email);
+        res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 1000 * 24 * 60 * 60 });
         return res.status(200).json({ accessToken, refreshToken });
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {
@@ -120,16 +121,17 @@ exports.getAllUsers = async (req, res) => {
 // route '/api/v1/aws-training-management-system/user/logout'
 exports.logout = async (req, res) => {
     try {
-       const { refreshToken } = req.body;
-       if(!refreshToken) throw new Error();
+       const refreshToken  = req.cookies.jwt
+       if(!refreshToken) throw new AuthenticationError("Not LoggedIn");
        const email =  await verifyRefreshToken(refreshToken);
-       client.DEL(userId, (err, value) => {
+       client.DEL(email, (err, value) => {
            if (err) {
                console.log(err.message);
-               throw new Error();
+               throw new AuthenticationError("Not LoggedIn");
            }
            console.log(value);
-           res.status(204).json("Successfully Logout user")
+           res.cookie('jwt', '', { maxAge: 1 });
+           res.status(200).json({message: "Successfully Logout user"})
        })
 
     } catch (err) {
@@ -142,11 +144,12 @@ exports.logout = async (req, res) => {
 // route '/api/v1/aws-training-management-system/user/logout'
 exports.refreshToken = async (req, res) => {
     try {
-        const { refreshToken } = req.body
-        if(!refreshToken) throw new Error();
+        const refreshToken  = req.cookies.jwt
+        if(!refreshToken) throw new AuthenticationError("Not LoggedIn");
         const email = await verifyRefreshToken(refreshToken);
-        const accessToken = await createToken(user.aws_email);
-        const refToken = await signRefreshToken(user.aws_email); 
+        const accessToken = await createToken(email);
+        const refToken = await signRefreshToken(email); 
+        res.cookie('jwt', refToken, { httpOnly: true, maxAge: 1000 * 24 * 60 * 60});
         res.status(200).json({accessToken: accessToken, refreshToken: refToken});
     } catch (err) {
         errorHandling(err, (status_code, error_message) => {

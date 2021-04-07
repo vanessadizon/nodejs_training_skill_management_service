@@ -2,8 +2,7 @@
 
 // Load the 'user' controller
 const userController = require('../controllers/user.controller');
-const passport = require('passport');
-const { loggedIn } = require('../../middleware/passport/passport')
+const { verifyAccessToken } = require('../../middleware/jwt/jwt');
 
 module.exports = function (app) {
     /**
@@ -83,7 +82,8 @@ module.exports = function (app) {
      *     200:
      *       description: 1.) return { result }
      *       examples:
-     *         application/json: { "token": "Bearer + <token>"}
+     *         application/json: { "accessToken": "string",
+     *                              "refreshToken": "string"}
      *     401:
      *       description: 2.) return { error_message }
      *       examples:
@@ -139,7 +139,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-     app.route('/api/v1/aws-training-management-system/user/:user_id').put(passport.authenticate('jwt'), userController.updateUser);
+     app.route('/api/v1/aws-training-management-system/user/:user_id').put(verifyAccessToken, userController.updateUser);
 
      /**
      * @swagger
@@ -178,7 +178,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-      app.route('/api/v1/aws-training-management-system/user/:user_id').delete(passport.authenticate('jwt'), userController.deleteUserByUserId);
+      app.route('/api/v1/aws-training-management-system/user/:user_id').delete(verifyAccessToken, userController.deleteUserByUserId);
 
     /**
      * @swagger
@@ -221,7 +221,7 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-    app.route('/api/v1/aws-training-management-system/user/id/:user_id').get(passport.authenticate('jwt'), userController.getUserByUserId);
+    app.route('/api/v1/aws-training-management-system/user/id/:user_id').get(verifyAccessToken, userController.getUserByUserId);
 
     /**
      * @swagger
@@ -258,73 +258,36 @@ module.exports = function (app) {
      *     name: Authorization
      *     in: header
      */
-    app.route('/api/v1/aws-training-management-system/user/all').get(passport.authenticate('jwt'), userController.getAllUsers);
+    app.route('/api/v1/aws-training-management-system/user/all').get(verifyAccessToken, userController.getAllUsers);
 
     /**
      * @swagger
      * /api/v1/aws-training-management-system/user/logout:
-     *  get:
+     *  post:
      *   tags:
      *     - User API
      *   description: Able to logout User.
-     *   parameters:
-     *     - in: body
-     *       name: body
-     *       description: refreshToken
-     *       required: true
-     *       schema:
-     *         type: object
-     *         properties:
-     *           refreshToken: 
-     *             type: string
-     *         example:
-     *           refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcmFyZG9qci5hYmFudGFvQGF3c3lzLWkuY29tIiwiaWF0IjoxNjE3Njk2MDgyLCJleHAiOjE2MjAyODgwODJ9.FwS22anZYEI74pfmn_L0zSO0eLgyN9jd71njlZu79ck"
-     *   security:
-     *     - Bearer: []
      *   responses:
      *     200:
      *       description: 1.) return { result }
      *       examples:
      *         application/json: { "message": "Successfully logout user"}
-     * securityDefinitions:
-     *   Bearer:
-     *     type: apiKey
-     *     name: Authorization
-     *     in: header 
      */
-    app.route('/api/v1/aws-training-management-system/user/logout').delete(passport.authenticate('jwt'), userController.logout);
+    app.route('/api/v1/aws-training-management-system/user/logout').post(userController.logout);
 
     /**
      * @swagger
-     * /api/v1/aws-training-management-system/user/logout:
-     *  get:
+     * /api/v1/aws-training-management-system/user/refresh-token:
+     *  post:
      *   tags:
      *     - User API
      *   description: Refresh token
-     *   parameters:
-     *     - in: body
-     *       name: body
-     *       description: refreshToken
-     *       required: true
-     *       schema:
-     *         type: object
-     *         properties:
-     *           refreshToken: 
-     *             type: string
-     *         example:
-     *           refreshToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdlcmFyZG9qci5hYmFudGFvQGF3c3lzLWkuY29tIiwiaWF0IjoxNjE3Njk2MDgyLCJleHAiOjE2MjAyODgwODJ9.FwS22anZYEI74pfmn_L0zSO0eLgyN9jd71njlZu79ck"
-     *   security:
-     *     - Bearer: []
      *   responses:
      *     200:
      *       description: 1.) return { result }
      *       examples:
-     *         application/json: { "message": "Successfully logout user"}
-     * securityDefinitions:
-     *   Bearer:
-     *     type: apiKey
-     *     name: Authorization
-     *     in: header 
+     *         application/json: { "accessToken": "string",
+     *                              "refreshToken": "string"}
      */
-       app.route('/api/v1/aws-training-management-system/user/refresh-token').post(passport.authenticate('jwt'), userController.refreshToken);
+       app.route('/api/v1/aws-training-management-system/user/refresh-token').post(userController.refreshToken);
 };

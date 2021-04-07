@@ -8,7 +8,7 @@ const path = require('path'),
     logger = require(path.resolve('middleware/logging/logger')),
     swaggerDocs = require(path.resolve('middleware/jsdocs/swagger')),
     swaggerUi = require('swagger-ui-express'),
-    passport = require('passport'),
+    cookies = require("cookie-parser"),
     session = require('express-session');
 require(path.resolve('middleware/redis/redis'));
 
@@ -19,6 +19,7 @@ module.exports = function () {
     const app = express();
 
     app.use(express.json());
+    app.use(cookies());
 
     // Use the 'NDOE_ENV' variable to activate the 'morgan' logger or 'compress' middleware
     if (process.env.NODE_ENV === 'development') {
@@ -36,6 +37,7 @@ module.exports = function () {
     app.use(bodyParser.json());
     app.use(methodOverride());
 
+
     // Passport Middleware
     app.use(
         session({
@@ -45,11 +47,6 @@ module.exports = function () {
             cookie: { maxAge: 3600000 }
         })
     );
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    require('../passport/passport')(passport);
-
     // Routing log directory
     app.use('/log', express.static(path.resolve('log')));
 

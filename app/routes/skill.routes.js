@@ -3,6 +3,7 @@
 // Load the 'skill' controller
 const skillController = require('../controllers/skill.controller');
 const passport = require('passport');
+const { verifyAccessToken } = require('../../middleware/jwt/jwt');
 
 // Define the routes module' method
 module.exports = function (app) {
@@ -19,6 +20,8 @@ module.exports = function (app) {
      *       schema:
      *         type: integer
      *       required: true
+     *   security:
+     *     - Bearer: []
      *   responses:
      *     200:
      *       description: 1.) return { result }
@@ -29,8 +32,17 @@ module.exports = function (app) {
      *       description: 2.) return { error_message }
      *       examples:
      *         application/json: { "error_message": "Cannot connect to database / System error." }
+     * schemes:
+     *   - http
+     *   - https
+     * securityDefinitions:
+     *   Bearer:
+     *     type: apiKey
+     *     name: Authorization
+     *     in: header
      */
-    app.route('/api/v1/aws-training-management-system/skill/id/:skill_id').get(passport.authenticate('jwt', {session:false}),
+    app.route('/api/v1/aws-training-management-system/skill/id/:skill_id').get(
+        verifyAccessToken,
         skillController.getSkillBySkillId
     );
 
@@ -50,6 +62,8 @@ module.exports = function (app) {
      *       required: true
      *       schema:
      *         $ref: "#/definitions/Skill"
+     *   security:
+     *     - Bearer: [] 
      *   responses:
      *     200:
      *       description: 1.) return { result }
@@ -100,6 +114,7 @@ module.exports = function (app) {
      *
      */
     app.route('/api/v1/aws-training-management-system/skill/').post(
+        verifyAccessToken,
         skillController.addNewSkill
     );
 
@@ -122,6 +137,8 @@ module.exports = function (app) {
      *       required: true
      *       schema:
      *         $ref: "#/definitions/Skill"
+     *   security:
+     *     - Bearer: [] 
      *   responses:
      *     200:
      *       description: 1.) return { result }
@@ -138,6 +155,7 @@ module.exports = function (app) {
      *
      */
     app.route('/api/v1/aws-training-management-system/skill/:skill_id').put(
+        verifyAccessToken,
         skillController.updateSkillDetails
     );
 
@@ -154,7 +172,8 @@ module.exports = function (app) {
      *       schema:
      *         type: integer
      *       required: true
-     *
+     *   security:
+     *     - Bearer: []
      *   responses:
      *     200:
      *       description: 1.) return { result }
@@ -166,7 +185,7 @@ module.exports = function (app) {
      *         application/json: { "error_message": "Cannot connect to database / System error." }
      *
      */
-    app.route('/api/v1/aws-training-management-system/skill/:skill_id').delete(
+    app.route('/api/v1/aws-training-management-system/skill/:skill_id').delete(verifyAccessToken,
         skillController.deleteSkillBySkillId
     );
 
@@ -177,7 +196,8 @@ module.exports = function (app) {
      *   tags:
      *     - Skill API
      *   description: Get all available skills
-     *
+     *   security:
+     *     - Bearer: []
      *   responses:
      *     200:
      *       description: 1.) return { result }
@@ -203,7 +223,5 @@ module.exports = function (app) {
      *         application/json: { "error_message": "Cannot connect to database / System error." }
      *
      */
-    app.route('/api/v1/aws-training-management-system/skill/all').get(
-        skillController.getAllSkills
-    );
+    app.route('/api/v1/aws-training-management-system/skill/all').get(verifyAccessToken, skillController.getAllSkills);
 };
