@@ -120,7 +120,7 @@ exports.getAllUsers = async (req, res) => {
 exports.logout = async (req, res) => {
     try {
         const refreshToken = req.cookies.jwt;
-        if (!refreshToken) throw new AuthenticationError('Not LoggedIn');
+        if (!refreshToken) throw new AuthenticationError('UnAuthorized');
         res.cookie('jwt', '', { maxAge: 1 });
         res.status(200).json({ message: 'Successfully Logout user' });
     } catch (err) {
@@ -134,7 +134,7 @@ exports.logout = async (req, res) => {
 exports.refreshToken = async (req, res) => {
     try {
         const refreshToken = req.cookies.jwt;
-        if (!refreshToken) throw new AuthenticationError('Not LoggedIn');
+        if (!refreshToken) throw new AuthenticationError('Unauthorized');
         const email = await verifyRefreshToken(refreshToken);
         const accessToken = await createToken(email);
         const refToken = await signRefreshToken(email);
