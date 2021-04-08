@@ -38,7 +38,7 @@ function errorHandler(err, cb){
     } else if (err.code === "ER_DUP_ENTRY"){
         status_code = 409;
         err.message = "Duplicate Entry.";
-    } else {
+    } else if (err.code === "ERR__SYSTEM_ERROR") {
         status_code = 503;
         err.message = "Cannot connect to database / System error.";
     }
@@ -185,7 +185,6 @@ exports.getAllSkills = async (req, res) => {
         })
       }
 };
-
 exports.addNewUser = async (req, res) => {
     try{
         await addUserSchema.validateAsync(req.body);
@@ -298,8 +297,4 @@ function checkToken (req, res, next){
             });
         })
     }
-    
-    
-
-    
 }

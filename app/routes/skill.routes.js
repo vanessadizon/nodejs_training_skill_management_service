@@ -218,7 +218,7 @@ module.exports = function (app) {
     *     409:
     *       description: 2.) return { error_message }
     *       examples:
-    *          application/json: { "error_message": "Duplicate entry."}
+    *          application/json: {}
     *     503:
     *       description: 2.) return { error_message }
     *       examples:
