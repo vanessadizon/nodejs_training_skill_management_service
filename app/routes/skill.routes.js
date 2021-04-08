@@ -275,12 +275,7 @@ module.exports = function (app) {
     *     200:
     *       description: 1.) return { result }
     *       examples:
-    *         application/json: { "skill_id": 2, "skill_name": "NodeJS", "skill_description": "A backend technology ...",
-    *                             "references": [{ "reference_id": 10, "ref_link": "https://www.youtube.com/watch?v=TlB_eWDSMt4&t=4s", "ref_category": 0, "length_in_mins": 60, "skill_id": 2 }] }
-    *     409:
-    *       description: 2.) return { error_message }
-    *       examples:
-    *          application/json: { "error_message": "Duplicate entry."}
+    *         application/json: { "logout": "Successful" }
     *     503:
     *       description: 2.) return { error_message }
     *       examples:
